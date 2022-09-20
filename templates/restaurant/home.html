@@ -11,6 +11,7 @@
     {{ menu.photo }}
     {{ menu.name }}
     <a href="{% url 'restaurant:edit' menu.pk %}">メニュー編集</a>
+    <a href="{% url 'restaurant:delete' menu.pk %}">メニュー削除</a>
 {% endfor %}
 <a href="{% url 'restaurant:add' %}">メニュー追加</a>
 </body>

@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from .models import Menu
 from .forms import MenuForm
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 
@@ -31,4 +31,9 @@ class EditMenuView(UpdateView):
     model = Menu
     form_class = MenuForm
     template_name = 'restaurant/add.html'
+    success_url = reverse_lazy('restaurant:home')
+
+class DeleteMenuView(DeleteView):
+    model = Menu
+    template_name = 'restaurant/confirm_delete.html'
     success_url = reverse_lazy('restaurant:home')
