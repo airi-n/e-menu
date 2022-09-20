@@ -4,6 +4,8 @@ from . import forms
 from .models import User
 from django.urls import reverse_lazy
 
+
+
 class Login(LoginView):
     form_class = forms.LoginForm
     template_name = "accounts/login.html"

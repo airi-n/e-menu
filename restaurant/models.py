@@ -8,7 +8,7 @@ class Menu(models.Model):
     method = models.CharField(max_length=5)
     price = models.IntegerField()
     num_people = models.IntegerField()
-    photo = models.ImageField(upload_to='images/')
+    photo = models.ImageField(upload_to='')
 
     def __str__(self):
         return self.name
