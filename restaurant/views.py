@@ -22,9 +22,13 @@ def home(request):
     return render(request, 'restaurant/home.html', context)
 #
 class  AddMenuView(CreateView):
-    template_name = 'restaurant/add.html'
-    form_class = MenuForm
-    # restaurant = request.user
     # model = Menu
+    form_class = MenuForm
+    template_name = 'restaurant/add.html'
     success_url = reverse_lazy('restaurant:home')
 
+class EditMenuView(UpdateView):
+    model = Menu
+    form_class = MenuForm
+    template_name = 'restaurant/add.html'
+    success_url = reverse_lazy('restaurant:home')

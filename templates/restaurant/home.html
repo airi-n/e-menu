@@ -10,7 +10,7 @@
 {% for menu in menus %}
     {{ menu.photo }}
     {{ menu.name }}
-    <a href="{% url 'restaurant:add' %}">メニュー追加</a>
+    <a href="{% url 'restaurant:edit' menu.pk %}">メニュー編集</a>
 {% endfor %}
 <a href="{% url 'restaurant:add' %}">メニュー追加</a>
 </body>
