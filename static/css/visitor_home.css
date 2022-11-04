@@ -1,0 +1,98 @@
+/*タブ切り替え全体のスタイル*/
+.tabs {
+  margin-top: 50px;
+  padding-bottom: 40px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  width: 1050px;
+  margin: 0 auto;}
+
+/*タブのスタイル*/
+.tab_item {
+  width: calc(100%/3);
+  height: 50px;
+  border-bottom: 3px solid #5ab4bd;
+  background-color: #d9d9d9;
+  line-height: 50px;
+  font-size: 16px;
+  text-align: center;
+  color: #565656;
+  display: block;
+  float: left;
+  text-align: center;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+.tab_item:hover {
+  opacity: 0.75;
+}
+
+/*ラジオボタンを全て消す*/
+input[name="tab_item"] {
+  display: none;
+}
+
+/*タブ切り替えの中身のスタイル*/
+.tab_content {
+  display: none;
+  padding: 40px 40px 0;
+  clear: both;
+  overflow: hidden;
+}
+
+
+/*選択されているタブのコンテンツのみを表示*/
+#all:checked ~ #all_content,
+#programming:checked ~ #programming_content,
+#design:checked ~ #design_content {
+  display: block;
+}
+
+/*選択されているタブのスタイルを変える*/
+.tabs input:checked + .tab_item {
+  background-color: #5ab4bd;
+  color: #fff;
+}
+ul {
+  list-style-type: none
+}
+
+.bl_flexContainer {
+	display: flex;
+	flex-wrap: wrap;
+    flex-flow: column;
+	justify-content: space-between;
+	padding: 10px;
+    margin: 10px;
+
+}
+.el_flexItem {
+	width: 90%;
+	height: 300px;
+    padding: 30px;
+	/*background-color: royalblue;*/
+}
+
+.box{
+    border: 1px solid #333;
+}
+.button {
+  font-size: .8rem;
+  text-align:center;
+  text-decoration: none;
+	padding-bottom: 0;
+}
+
+.button_01.-compact {
+  padding: .5rem 1rem;
+  border-radius: .25rem;
+  background-color: #4f96f6;
+  color: #fff;
+  font-weight: bold;
+	text-decoration: none;
+}
+
+.button_01.-compact:hover,
+.button_01.-compact:focus {
+  background-color: #6bb6ff;
+}
