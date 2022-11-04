@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import restaurant, visitor
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('restaurant/', include(('restaurant.urls','restaurant'), namespace='restaurant')),
     path('visitor/', include(('visitor.urls', 'visitor'), namespace='visitor' )),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

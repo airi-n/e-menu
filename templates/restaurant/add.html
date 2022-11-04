@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    {{ form.as_ul }}
+
+    <a href="{% url 'restaurant:category'%}">材料追加</a>
+    <button type="submit">投稿</button>
+</form>
+</body>
+</html>

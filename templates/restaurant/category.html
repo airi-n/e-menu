@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% for category in ingredients_category %}
+    <li><a href="{% url 'restaurant:ingredient' category=category.category %} ">{{ category.category }}</a></li>
+{% endfor %}
+</body>
+</html>
