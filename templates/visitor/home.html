@@ -15,23 +15,32 @@
     <input id="programming" type="radio" name="tab_item">
     <label class="tab_item" for="programming">Search Local Cuisine</label>
     <div class="tab_content" id="all_content">
-        <ul>
-            {% for category in ingredients_category %}
-            <li>
-            <details>
-            <summary>{{ category.category }}</summary>
+        <p>Your preference: Avoid </p>
+        {% for p in preference %}
+            <p>{{ p }}</p>
+        {% endfor %}
+        <form action='{% url 'visitor:register' %}' method='post' class='form'>
+            <!-- ユーザー登録フォームを表示 -->
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value={{ user_id }}>
             <ul>
-                {% for ingredient in ingredient_list %}
-                    {% if ingredient.category == category.category  %}
-                        <li><p>{{ ingredient.Jp_name }}</p></li>
-                    {% endif %}
+                {% for category in ingredients_category %}
+                <li>
+                <details>
+                <summary>{{ category.category }}</summary>
+                <ul>
+                    {% for ingredient in ingredient_list %}
+                        {% if ingredient.category == category.category  %}
+                            <input type="checkbox" name="ingredient_id" value={{ ingredient.id }}><li><p>{{ ingredient.Jp_name }}</p></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                </details>
+                 </li>
                 {% endfor %}
             </ul>
-            </details>
-             </li>
-            {% endfor %}
-        </ul>
-
+            <button type='submit' class='btn btn-outline-primary'>登録</button>
+        </form>
 
     </div>
     <div class="tab_content" id="programming_content">
@@ -55,8 +64,9 @@
             <li class="el_flexItem">
                 <div class="box">
                     <img src="https://www.japan-guide.com/g9/4811_motsunabe.jpg" width="250" height="150" >
-                    <p>Motsu nabe</p>
-                    <p>Motsunabe is a local hot pot dish typically made up of beef or pork tripe, cabbage, garlic,
+                    <p>Nabemono</p>
+                    <p>Nabemono is a compound word, where nabe (鍋) refers to a cooking pot and mono (物) means things or stuff. The concept of a nabe is simple: it can be a mixture of fresh vegetables, meat, seafood, tofu, and soybean products, or seasonal ingredients, all to be cooked in a simmering soup broth in a pot.
+                        Motsunabe is a local hot pot dish typically made up of beef or pork tripe, cabbage, garlic,
                         chives and togarashi peppers in a soy sauce or miso based soup. The inexpensive, slightly spicy
                         stew is usually cooked at the table on portable burners and served together with a bowl of white
                         rice. Noodles or additional rice may be added to the leftover soup in the pot at the end of the
@@ -68,7 +78,7 @@
             <li class="el_flexItem">
                 <div class="box">
                     <img src="https://www.japan-guide.com/g9/4811_gyoza.jpg" width="250" height="150" >
-                    <p>Tetsunabe Gyoza</p>
+                    <p>Gyoza</p>
                     <p>Gyoza are pan-fried, Chinese style dumplings, which are typically stuffed with a mixture of
                         ground pork, cabbage and green onions. While gyoza appear on the menus of ramen-ya, izakaya and
                         other restaurants nationwide, they are also a popular Fukuoka specialty where they are served in
@@ -81,8 +91,8 @@
             <li class="el_flexItem">
                 <div class="box">
                     <img src="https://www.japan-guide.com/g9/4811_hakataramen.jpg" width="250" height="150" >
-                    <p>Hakata Ramen</p>
-                    <p>Hakata Ramen is a local ramen dish that features thin noodles in a thick, creamy tonkotsu soup,
+                    <p>Ramen</p>
+                    <p>Ramen is a Japanese noodle dish. Hakata Ramen is a local ramen dish that features thin noodles in a thick, creamy tonkotsu soup,
                         topped with slices of chashu. Some of the best places to enjoy Hakata Ramen are the city's
                         emblematic yatai food stalls. Hakata Ramen can also be found at any of the numerous ramen-ya in Fukuoka,
                         especially around Hakata Station.

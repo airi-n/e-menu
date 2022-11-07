@@ -53,7 +53,7 @@ def category(request):
     restaurant = request.user
     menus = Menu.objects.filter(Restaurant_id=restaurant.id)
     ingredients = Ingredient.objects.all()
-    ingredients_category = Ingredient.objects.values('category').distinct()
+    ingredients_category = Ingredient.objects.values('preference').distinct()
     context = {
         'restaurant': restaurant.first_name,
         'menus': menus,
