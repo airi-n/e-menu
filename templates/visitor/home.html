@@ -30,8 +30,8 @@
                 <summary>{{ category.category }}</summary>
                 <ul>
                     {% for ingredient in ingredient_list %}
-                        {% if ingredient.category == category.category  %}
-                            <input type="checkbox" name="ingredient_id" value={{ ingredient.id }}><li><p>{{ ingredient.Jp_name }}</p></li>
+                        {% if ingredient.category == category.category and ingredient.Jp_name not in preference %}
+                            <input type="checkbox" name="ingredient_id"  value={{ ingredient.id }}><li><p>{{ ingredient.Jp_name }}</p></li>
                         {% endif %}
                     {% endfor %}
                 </ul>
@@ -85,7 +85,7 @@
                         large batches on ceramic or hot iron plates. Fukuoka, or Hakata, style gyoza can be found at
                         specialty gyoza shops around the city, especially around Hakata Station.
                     </p>
-                    <p class="button"><a href="cuisine#3" class="button_01 -compact">Search Restaurant</a></p>
+                    <p class="button"><a href="cuisine#4" class="button_01 -compact">Search Restaurant</a></p>
                 </div>
             </li>
             <li class="el_flexItem">
@@ -97,7 +97,8 @@
                         emblematic yatai food stalls. Hakata Ramen can also be found at any of the numerous ramen-ya in Fukuoka,
                         especially around Hakata Station.
                     </p>
-                    <p class="button"><a href="cuisine#4" class="button_01 -compact">Search Restaurant</a></p>
+                    <p class="button"><a href="{% url 'visitor:search' pk=3 %}" class="button_01 -compact">Search Restaurant</a></p>
+
                 </div>
             </li>
         </ul>

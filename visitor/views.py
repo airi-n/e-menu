@@ -1,13 +1,9 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
-from django.http import HttpResponse
-from restaurant.models import Ingredient
+from restaurant.models import Ingredient, Menu
 from accounts.models import User
-from django.urls import reverse_lazy
-from django import forms
 from.form import PreferenceForm
 from django.views import View
-from .form import TagInlineFormSet
 from itertools import chain
 
 
@@ -40,7 +36,7 @@ class Home(View):
     form_class = PreferenceForm
     template_name = 'visitor/home.html'
 
-    def showMenu(request):
+    def preferenceList(request):
         print("worked")
         user_id = request.user.id
         ingredient_id_taple = User.objects.filter(id=user_id).values_list('preference')
@@ -58,9 +54,7 @@ class Home(View):
         }
         return render(request, 'visitor/home.html', context)
 
-    # def get(self, request, *args, **kwargs):
-    #     form = self.form_class()
-    #     return render(request, self.template_name, {'form': form})
+
 
     def createPreferenceForm(request,  *args, **kwargs):
         print("worked")
@@ -81,49 +75,33 @@ class Home(View):
         context = {
             'form': form
         }
-        # form = PreferenceForm(request.POST or None)
-        #
-        # context = {
-        #     'form': form,
-        # }
-        # if request.method == 'POST' and form.is_valid():
-        #     post = form.save(commit=False)
-        #     formset = TagInlineFormSet(request.POST, instance=post)
-        #     if formset.is_valid():
-        #         post.save()
-        #         formset.save()
-        #         return redirect('visitor:home')
-        #     else:
-        #         context['formset'] = formset
-        #
-        # else:
-        #     context['formset'] = TagInlineFormSet()
 
-        # context ={
-        #     'preference': preference,
-        #     'form': form_class,
-        # }
-        # print(preference)
-        # print(user_id)
-        # if request.method == 'POST':
-        #     update_preference = User.objects.filter(id=user_id)
-        #     update_preference.preference = request.POST['preference']
-        #     update_preference.save()
-        #     print("saved!")
         return render(request, 'visitor/home.html', context)
 
+def searchResultShow(request, pk):
+    menus = Menu.objects.filter(cuisine_num = pk)
+    user_id = request.user.id
+    ingredient_id_taple = User.objects.filter(id=user_id).values_list('preference')
+    ingredient_id = list(chain.from_iterable(ingredient_id_taple))
+    preference_registered = Ingredient.objects.filter(id__in=ingredient_id).values_list('Jp_name')
+    # ingredient_id = list(chain.from_iterable(menus.values_list('preference')))
+    # ingredients = Ingredient.objects.filter(id__in=ingredient_id)
 
-# class PreferenceRegisterView(forms.Form):
-#     class Meta:
-#         model = User
-#         fields = ['preference',]
-#         widgets = {
-#             'preference': forms.ModelMultipleChoiceField(queryset=Ingredient.objects.all(), widget=forms.CheckboxSelectMultiple()),
-#         }
-#         print("pass")
+    context = {
+        'menus': menus,
+        'preference': list(chain.from_iterable((preference_registered))),
+        # 'ingredients': ingredients,
 
-# class PreferenceRegisterView(CreateView):
-#     model = User
-#     fields = ('preference',)
-#     template_name = "preference_register.html"
-#     success_url = reverse_lazy("visitor:home")
+    }
+
+    return  render(request, 'visitor/search_result.html', context)
+
+from django import template
+
+
+register = template.Library()
+
+
+@register.filter
+def check_datatype(value):
+    return type(value)

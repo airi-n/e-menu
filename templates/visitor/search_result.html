@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+{% for menu in menus  %}
+    {{ menu.name }}
+    {{ menu.method }}
+    {{ menu.price }}
+    {{ menu.num_people }}
+    {{ menu.photo }}
+    {% for ingredient in menu.ingredient.all.values %}
+        {% if ingredient.Jp_name in preference %}
+            #Worn{{ ingredient.Jp_name }}
+        {%  else %}
+            a{{ ingredient.Jp_name  }}
+        {% endif %}
+    {% endfor %}
+    ___
+{% endfor %}
+</body>
+</html>
