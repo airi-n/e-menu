@@ -17,7 +17,16 @@
     <div class="tab_content" id="all_content">
         <p>Your preference: Avoid </p>
         {% for p in preference %}
-            <p>{{ p }}</p>
+            <form action="{% url 'visitor:delete' %}" method='post'>
+            {% csrf_token %}
+            <input type="hidden" value={{ p }} name="delete">
+            <button name="delete_preference" >x</button>
+            <div class="tag">
+                {{ p }}
+            </div>
+          </form>
+
+
         {% endfor %}
         <form action='{% url 'visitor:register' %}' method='post' class='form'>
             <!-- ユーザー登録フォームを表示 -->

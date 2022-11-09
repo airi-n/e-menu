@@ -41,11 +41,11 @@ class Home(View):
         user_id = request.user.id
         ingredient_id_taple = User.objects.filter(id=user_id).values_list('preference')
         ingredient_id = list(chain.from_iterable(ingredient_id_taple))
-        print(ingredient_id)
+        # print(ingredient_id)
         preference_registered = Ingredient.objects.filter(id__in =  ingredient_id ).values_list('Jp_name')
         ingredient_list = Ingredient.objects.all()
         ingredients_category = Ingredient.objects.values('category').distinct()
-        print(user_id, preference_registered)
+        # print(user_id, preference_registered)
         context = {
             'user_id': user_id,
             'preference': list(chain.from_iterable((preference_registered))),
@@ -60,7 +60,7 @@ class Home(View):
         print("worked")
         if request.method =="POST":
             form = PreferenceForm(request.POST)
-            print(request.POST.getlist('ingredient_id'))
+            # print(request.POST.getlist('ingredient_id'))
 
             if form.is_valid():
                 for p in request.POST.getlist('ingredient_id'):
@@ -77,6 +77,20 @@ class Home(View):
         }
 
         return render(request, 'visitor/home.html', context)
+
+    def deletePreference(request):
+        if request.method =="POST":
+            if 'delete_preference' in request.POST:
+
+                user = User.objects.get(id=request.user.id)
+                preference = request.POST['delete']
+                preference_id = Ingredient.objects.filter(Jp_name=preference).values('id')
+                user.preference.remove(list(preference_id)[0]["id"])
+                user.save()
+
+        return redirect('visitor:home')
+
+
 
 def searchResultShow(request, pk):
     menus = Menu.objects.filter(cuisine_num = pk)
@@ -96,12 +110,4 @@ def searchResultShow(request, pk):
 
     return  render(request, 'visitor/search_result.html', context)
 
-from django import template
 
-
-register = template.Library()
-
-
-@register.filter
-def check_datatype(value):
-    return type(value)
