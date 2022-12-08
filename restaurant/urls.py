@@ -10,8 +10,9 @@ urlpatterns = [
     path('add/', views.AddMenuView.as_view(), name='add'),
     # path('add/category', views.category, name='category'),
     # path('add/category/<str:category>/', views.ingredient, name='ingredient'),
-    path('edit/<slug:pk>/ingredient', views.EditMenuView.createIngredientsForm, name='ingredient'),
+    path('edit/<slug:pk>/ingredient_add', views.EditMenuView.createIngredientsForm, name='ingredient'),
     path('edit/<slug:pk>/', views.EditMenuView.as_view(), name='edit'),
+    path('edit/<slug:pk>/ingredient_delete', views.EditMenuView.deleteIngredient, name='delete_ingredient'),
     path('delete/<slug:pk>/', views.DeleteMenuView.as_view(), name='delete')
 ]
 if settings.DEBUG:

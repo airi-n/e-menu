@@ -65,44 +65,44 @@ class EditMenuView(UpdateView):
 
         if request.method == "POST":
             ingredient_form = IngredientsForm()
-            print("1")
             # print(request.POST.getlist('ingredient_id'))
             if 'ingredient_id' in request.POST:
                 ingredient_form = IngredientsForm(request.POST)
-                print("2")
                 # if ingredient_form.is_valid():
                 #     print("3")
                     # form = MenuForm(request.POST)
                     # form.save()
                 for p in request.POST["ingredient_id"]:
-                    print("4")
+                    print(p)
                     menu = Menu.objects.get(id=pk)
                     menu.ingredient.add(p)
-                    print("5")
+
                     menu.save()
-                    print("save")
+
                     # return reverse('restaurant:edit', kwargs={'pk':pk})
 
 
 
-        print("before context")
+
         # context = {
         #     # 'ingredient_form': ingredient_form,
         #     'pk': int(pk),
         # }
         return redirect('restaurant:edit', pk=int(pk))
 
-    def deleteIngredient(request):
+    def deleteIngredient(request,  *args, **kwargs):
+        print("delete1")
         if request.method =="POST":
             if 'delete_ingredient' in request.POST:
-                menu_id=request.GET.get('pk')
+                print("delete2")
+                menu_id=kwargs['pk']
                 menu=Menu.objects.get(id=menu_id)
-                ingredient = request.POST['delete']
-                ingredient_id = Ingredient.objects.filter(Jp_name=ingredient).values('id')
-                menu.ingredient.remove(list(ingredient_id)[0]["id"])
+                ingredient_id = request.POST['delete']
+                print(ingredient_id)
+                menu.ingredient.remove(ingredient_id)
                 menu.save()
 
-        return redirect('visitor:home')
+        return redirect('restaurant:edit', pk=int(menu_id))
 
     def get_success_url(self):
         # id = self.kwargs['pk']
