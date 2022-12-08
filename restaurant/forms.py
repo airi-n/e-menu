@@ -12,8 +12,30 @@ class MenuForm(forms.ModelForm):
         self.fields['Restaurant_id'].initial = 2
         self.fields['Restaurant_id'].widget = forms.HiddenInput()
 
+    name = forms.CharField(label="メニュー名")
+    method = forms.CharField(label="調理方法")
+    price = forms.IntegerField(label="価格")
+    num_people = forms.IntegerField(label="人数")
+    photo = forms.ImageField(label="料理の画像")
 
 
+
+class IngredientsForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # for field in self.fields.values():
+        #     field.widget.attrs['class'] = 'from-control'
+    class Meta:
+        model = Menu
+        fields = ('id','ingredient',)
+
+        # widgets = {
+        #     'preference': forms.CheckboxSelectMultiple(),
+        # }
+TagInlineFormSet = forms.inlineformset_factory(
+    Menu, Menu.ingredient.through, fields='__all__', can_delete=False
+)
 # class MenuIngredientForm(forms.ModelForm):
 #     class Meta:
 #         model = Menu_Ingredient

@@ -2,25 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    {% load static %}
+    {% load hebon %}
+    <link href="{% static 'css/visitor_home.css' %}" rel="stylesheet" type="text/css" media="all">
+    <link href="{% static 'css/visitor_menu.css' %}" rel="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Title</title>
+
 </head>
 <body>
 
+<div >
+    <h2 style="text-align: center">Noodle</h2>
+    {% for menu in menus  %}
+        <ul class="bl_flexContainer">
+            <li class="el_flexItem">
+                <div class="box">
+                    <div class="right">
+                        <div class="photo">
+                        <img src='../images/{{menu.photo}}'  width="250" height="150">
+                            {{ menu.photo }}
+                        </div>
+                    </div>
+                    <div class="left">
+                        <div>
+                        NAME:{{ menu.name | hebon }}
+                        </div>
+                        <div>
+    {#                    COOKING METHOD:{{ menu.method }}#}
+                            COOKING METHOD: Boil
+                        </div>
+                        <div>
+                        PRICE:{{ menu.price }}Yen
+                        </div>
+                        <div>
+                        SERVINGS:{{ menu.num_people }}
+                        </div>
+                        <div>
+                            INGREDIENTS:
+                            {% for ingredient in menu.ingredient.all.values %}
+                                {% if ingredient.Jp_name in preference %}
+                                    <p style="color:coral">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    {{ ingredient.En_name  }},
+                                    </p>
+                                {%  else %}
+                                    {{ ingredient.En_name  }},
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div>
+                            {% for restaurant in restaurants %}
+                                {% if menu.Restaurant_id == restaurant %}
+                                    RESTAURANT NAME:
+                                    <a href={{ restaurant.address }}>
+                                    {{ restaurant.name | hebon }}
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
 
-{% for menu in menus  %}
-    {{ menu.name }}
-    {{ menu.method }}
-    {{ menu.price }}
-    {{ menu.num_people }}
-    {{ menu.photo }}
-    {% for ingredient in menu.ingredient.all.values %}
-        {% if ingredient.Jp_name in preference %}
-            #Worn{{ ingredient.Jp_name }}
-        {%  else %}
-            a{{ ingredient.Jp_name  }}
-        {% endif %}
+                    </div>
+
+                </div>
+            </li>
+        </ul>
     {% endfor %}
-    ___
-{% endfor %}
+
+</div>
+
 </body>
 </html>

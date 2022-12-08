@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-     {% load static %}
+    {% load static %}
+
     <link href="{% static 'css/visitor_home.css' %}" rel="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Welcome</title>
 
 </head>
@@ -15,19 +17,23 @@
     <input id="programming" type="radio" name="tab_item">
     <label class="tab_item" for="programming">Search Local Cuisine</label>
     <div class="tab_content" id="all_content">
-        <p>Your preference: Avoid </p>
-        {% for p in preference %}
-            <form action="{% url 'visitor:delete' %}" method='post'>
-            {% csrf_token %}
-            <input type="hidden" value={{ p }} name="delete">
-            <button name="delete_preference" >x</button>
-            <div class="tag">
-                {{ p }}
-            </div>
-          </form>
+        <h3>Your preference: Avoid</h3>
+        <div class="contents">
+            {% for p in preference %}
+                <div class="item">
+                <form action="{% url 'visitor:delete' %}" method='post'>
+                    {% csrf_token %}
+                    <input type="hidden" value={{ p.Jp_name }} name="delete">
+                    <button name="delete_preference" class="delete-button"><i class="fa-solid fa-trash"></i></button>
+                    <div class="tag">
+                        {{ p.En_name }}
+                    </div>
+                </form>
+                </div>
 
-
-        {% endfor %}
+            {% endfor %}
+        </div>
+        <h3>Add Your Preference</h3>
         <form action='{% url 'visitor:register' %}' method='post' class='form'>
             <!-- ユーザー登録フォームを表示 -->
             {% csrf_token %}
@@ -37,10 +43,10 @@
                 <li>
                 <details>
                 <summary>{{ category.category }}</summary>
-                <ul>
+                <ul class="ingredient_list" >
                     {% for ingredient in ingredient_list %}
                         {% if ingredient.category == category.category and ingredient.Jp_name not in preference %}
-                            <input type="checkbox" name="ingredient_id"  value={{ ingredient.id }}><li><p>{{ ingredient.Jp_name }}</p></li>
+                            <li class="ingredient_item"><input type="checkbox" name="ingredient_id"  value={{ ingredient.id }}><p>{{ ingredient.En_name }}</p></li>
                         {% endif %}
                     {% endfor %}
                 </ul>
@@ -48,19 +54,21 @@
                  </li>
                 {% endfor %}
             </ul>
-            <button type='submit' class='btn btn-outline-primary'>登録</button>
+            <div style="text-align: center">
+                <button type='submit' class='register_button'>Register</button>
+            </div>
         </form>
 
     </div>
     <div class="tab_content" id="programming_content">
         <div>
-            Fukuoka's local cuisine
+            <h2>Fukuoka's local cuisine</h2>
         </div>
         <ul class="bl_flexContainer">
             <li class="el_flexItem">
                 <div class="box">
                     <img src="https://www.japan-guide.com/g9/4811_mentaiko.jpg" width="250" height="150" >
-                    <p>Mentaiko</p>
+                    <h3>Mentaiko</h3>
                     <p>Mentaiko, the spicy version of salted cod roe (tarako), is a common Japanese food that can be
                         found nationwide accompanying rice or alcohol, used as filling for rice balls, or as a seasoning
                         in pasta dishes. Mentaiko is particularly famous in Fukuoka, where it originated by way of Korea,
@@ -73,7 +81,7 @@
             <li class="el_flexItem">
                 <div class="box">
                     <img src="https://www.japan-guide.com/g9/4811_motsunabe.jpg" width="250" height="150" >
-                    <p>Nabemono</p>
+                    <h3>Nabemono</h3>
                     <p>Nabemono is a compound word, where nabe (鍋) refers to a cooking pot and mono (物) means things or stuff. The concept of a nabe is simple: it can be a mixture of fresh vegetables, meat, seafood, tofu, and soybean products, or seasonal ingredients, all to be cooked in a simmering soup broth in a pot.
                         Motsunabe is a local hot pot dish typically made up of beef or pork tripe, cabbage, garlic,
                         chives and togarashi peppers in a soy sauce or miso based soup. The inexpensive, slightly spicy
@@ -87,7 +95,7 @@
             <li class="el_flexItem">
                 <div class="box">
                     <img src="https://www.japan-guide.com/g9/4811_gyoza.jpg" width="250" height="150" >
-                    <p>Gyoza</p>
+                    <h3>Gyoza</h3>
                     <p>Gyoza are pan-fried, Chinese style dumplings, which are typically stuffed with a mixture of
                         ground pork, cabbage and green onions. While gyoza appear on the menus of ramen-ya, izakaya and
                         other restaurants nationwide, they are also a popular Fukuoka specialty where they are served in
@@ -100,7 +108,7 @@
             <li class="el_flexItem">
                 <div class="box">
                     <img src="https://www.japan-guide.com/g9/4811_hakataramen.jpg" width="250" height="150" >
-                    <p>Ramen</p>
+                    <h3>Ramen</h3>
                     <p>Ramen is a Japanese noodle dish. Hakata Ramen is a local ramen dish that features thin noodles in a thick, creamy tonkotsu soup,
                         topped with slices of chashu. Some of the best places to enjoy Hakata Ramen are the city's
                         emblematic yatai food stalls. Hakata Ramen can also be found at any of the numerous ramen-ya in Fukuoka,

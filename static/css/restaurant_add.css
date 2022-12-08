@@ -1,0 +1,42 @@
+li{
+    list-style:none;
+    font-size: 20px;
+    padding: 8px;
+
+}
+
+input{
+    height: 20px;
+    font-size: 20px;
+    size: 20px;
+    padding: 8px;
+}
+label{
+    font-size: 20px;
+}
+
+
+button {
+    font-size: 20px;
+    background-color: #5ab4bd;
+    border: none;
+    color: #fff;
+    width: 150px;
+    height: 50px;
+    align: "center";
+    margin-top: 8px;
+}
+
+details{
+    font-size: 20px;
+}
+
+.from{
+    float: left;
+    width: 50%;
+}
+
+.ingredients_form{
+    float: right;
+    width: 50%;
+}

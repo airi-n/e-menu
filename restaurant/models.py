@@ -4,6 +4,7 @@ from django.db import models
 class Ingredient(models.Model):
     Jp_name = models.TextField()
     category = models.TextField()
+    En_name = models.TextField()
 
     def __str__(self):
         return self.Jp_name
@@ -11,7 +12,7 @@ class Ingredient(models.Model):
 
 class Menu(models.Model):
     Restaurant_id = models.ForeignKey('accounts.Restaurant', on_delete=models.CASCADE)
-    name = models.TextField()
+    name = models.CharField(max_length=1023)
     method = models.CharField(max_length=5)
     price = models.IntegerField()
     num_people = models.IntegerField()

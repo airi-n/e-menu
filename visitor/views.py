@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from restaurant.models import Ingredient, Menu
-from accounts.models import User
+from accounts.models import User, Restaurant
 from.form import PreferenceForm
 from django.views import View
 from itertools import chain
@@ -37,18 +37,18 @@ class Home(View):
     template_name = 'visitor/home.html'
 
     def preferenceList(request):
-        print("worked")
+        # print("worked")
         user_id = request.user.id
         ingredient_id_taple = User.objects.filter(id=user_id).values_list('preference')
         ingredient_id = list(chain.from_iterable(ingredient_id_taple))
         # print(ingredient_id)
-        preference_registered = Ingredient.objects.filter(id__in =  ingredient_id ).values_list('Jp_name')
+        preference_registered = Ingredient.objects.filter(id__in =  ingredient_id )
         ingredient_list = Ingredient.objects.all()
         ingredients_category = Ingredient.objects.values('category').distinct()
-        # print(user_id, preference_registered)
+        print(preference_registered)
         context = {
             'user_id': user_id,
-            'preference': list(chain.from_iterable((preference_registered))),
+            'preference': preference_registered,
             'ingredient_list': ingredient_list,
             'ingredients_category': ingredients_category,
         }
@@ -57,7 +57,6 @@ class Home(View):
 
 
     def createPreferenceForm(request,  *args, **kwargs):
-        print("worked")
         if request.method =="POST":
             form = PreferenceForm(request.POST)
             # print(request.POST.getlist('ingredient_id'))
@@ -98,13 +97,15 @@ def searchResultShow(request, pk):
     ingredient_id_taple = User.objects.filter(id=user_id).values_list('preference')
     ingredient_id = list(chain.from_iterable(ingredient_id_taple))
     preference_registered = Ingredient.objects.filter(id__in=ingredient_id).values_list('Jp_name')
+    restaurant = Restaurant.objects.all()
     # ingredient_id = list(chain.from_iterable(menus.values_list('preference')))
     # ingredients = Ingredient.objects.filter(id__in=ingredient_id)
-
+    print(restaurant)
     context = {
         'menus': menus,
         'preference': list(chain.from_iterable((preference_registered))),
         # 'ingredients': ingredients,
+        'restaurants':restaurant,
 
     }
 
