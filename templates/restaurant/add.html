@@ -4,31 +4,46 @@
     <meta charset="UTF-8">
     {% load static %}
     {% load hebon %}
+    {% load to_int %}
     <link href="{% static 'css/restaurant_add.css' %}" rel="stylesheet" type="text/css" media="all">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Title</title>
 </head>
 <body>
 <div class="from">
-    <form enctype="multipart/form-data" method="post">
+    <div style="float:right">
+    <label> 材料:</label>
+    <br>
+        <ul class="list list--2" >
+        {% for ingredient in menu.ingredient.all.values %}
+            <form action="{% url 'restaurant:delete_ingredient' pk %}" method='post'>
+                {% csrf_token %}
+                <li>
+                    <input type="hidden" value={{ ingredient.id }} name="delete">
+                    <button name="delete_ingredient" class="delete-button"><i class="fa-solid fa-xmark"></i></button>
+                    <div class="tag">
+                         {{ ingredient.Jp_name  }}
+                    </div>
+                </li>
+            </form>
+        {% endfor %}
+        </ul>
+    </div>
+    <form enctype="multipart/form-data" method="post" class="menu_form">
         <div>
             {% csrf_token %}
             {{ form.as_ul }}
-            <label> 材料:</label>
-
-            {% for ingredient in menu.ingredient.all.values %}
-                <li><i class="fa-solid fa-xmark"></i>  {{ ingredient.Jp_name  }} </li>
-
-            {% endfor %}
-
         </div>
         <div>
-            <button type="submit" >投稿</button>
+            <button type="submit" style="margin-top:5%; margin-left: 40%;" >投稿</button>
         </div>
 
     </form>
+
 </div>
+
 <div class="ingredients_form"  style="display: {{ display_type }}">
+
     <details >
         <summary>材料追加</summary>
         <form  action='{% url 'restaurant:ingredient' pk  %}' method='post' class='form' id="add_ingredient" >
@@ -43,7 +58,8 @@
                 <ul class="ingredient_list" >
                     {% for ingredient in ingredient_list %}
                         {% if ingredient.category == category.category and ingredient.id not in ingredients_id %}
-                            <li class="ingredient_item"><input type="checkbox" name="ingredient_id"  value={{ ingredient.id }}><p>{{ ingredient.Jp_name }}</p></li>
+
+                            <li class="ingredient_item"><input type="checkbox" name="ingredient_id"  value={{ ingredient.id | to_int }}><p>{{ ingredient.Jp_name }}</p></li>
                         {% endif %}
                     {% endfor %}
                 </ul>

@@ -45,10 +45,11 @@ class Home(View):
         preference_registered = Ingredient.objects.filter(id__in =  ingredient_id )
         ingredient_list = Ingredient.objects.all()
         ingredients_category = Ingredient.objects.values('category').distinct()
-        print(preference_registered)
+        print(list(preference_registered.values_list('Jp_name')))
         context = {
             'user_id': user_id,
             'preference': preference_registered,
+            'preference_jp_list': list(preference_registered.values_list('Jp_name', flat=True)),
             'ingredient_list': ingredient_list,
             'ingredients_category': ingredients_category,
         }
@@ -60,7 +61,7 @@ class Home(View):
         if request.method =="POST":
             form = PreferenceForm(request.POST)
             # print(request.POST.getlist('ingredient_id'))
-
+        # somehow it can register only one ingredient (last one)
             if form.is_valid():
                 for p in request.POST.getlist('ingredient_id'):
                   user = User.objects.get(id=request.user.id)
