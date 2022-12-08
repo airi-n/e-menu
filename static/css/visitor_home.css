@@ -5,11 +5,12 @@
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   width: 1050px;
-  margin: 0 auto;}
+  margin: 0 auto;
+}
 
 /*タブのスタイル*/
 .tab_item {
-  width: calc(100%/3);
+  width: calc(100%/2);
   height: 50px;
   border-bottom: 3px solid #5ab4bd;
   background-color: #d9d9d9;
@@ -68,7 +69,7 @@ ul {
 }
 .el_flexItem {
 	width: 90%;
-	height: 300px;
+	height: auto;
     padding: 30px;
 	/*background-color: royalblue;*/
 }
@@ -95,4 +96,59 @@ ul {
 .button_01.-compact:hover,
 .button_01.-compact:focus {
   background-color: #6bb6ff;
+}
+
+.tag {
+	display: inline-block;
+	margin: 0 .1em .6em 0;
+	padding: .6em;
+	line-height: 1;
+	text-decoration: none;
+	color: #0000ee;
+	background-color: #fff;
+	border: 1px solid #0000ee;
+	border-radius: 2em;
+}
+
+.delete-button {
+  border: none;
+  background: transparent;
+}
+
+.contents {
+   display: flex;
+   flex-wrap: wrap;
+   width: 100%;
+}
+.item {
+   /*width: calc(100% / 4);*/
+   padding: 10px 5px;
+   /*text-align: center;*/
+}
+
+.register_button {
+  font-size: 30px;
+  background-color: #5ab4bd;
+  border: none;
+  color: #fff;
+  width: 150px;
+  height: 50px;
+  align: "center";
+}
+
+.ingredient_list{
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+}
+
+.ingredient_item{
+      margin: 5px;
+      float: left;
+      display: flex;
+      width: calc(50% - 10px);
+}
+
+.photo{
+    text-align:right;
 }

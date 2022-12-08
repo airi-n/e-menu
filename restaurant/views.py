@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
-from accounts.models import User
+from accounts.models import Restaurant
 from .models import Menu, Ingredient
-from .forms import MenuForm
+from .forms import MenuForm, IngredientsForm
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.urls import reverse_lazy, reverse
+from itertools import chain
+
 
 
 
@@ -15,10 +17,15 @@ def home(request):
     restaurant = request.user
     print(restaurant )
     menus = Menu.objects.filter(Restaurant_id=restaurant.id)
-    print(menus)
+    restaurant_name = Restaurant.objects.get(user_id=restaurant.id)
+    ingredient_list = Ingredient.objects.all()
+    ingredients_category = Ingredient.objects.values('category').distinct()
+    # print(menus)
     context = {
-        'restaurant': restaurant.first_name,
+        'restaurant': restaurant_name.name,
         'menus': menus,
+        'ingredient_list': ingredient_list,
+        'ingredients_category': ingredients_category,
     }
     return render(request, 'restaurant/home.html', context)
 #
@@ -26,38 +33,103 @@ class  AddMenuView(CreateView):
     model = Menu
     form_class = MenuForm
     template_name = 'restaurant/add.html'
-    success_url = reverse_lazy('restaurant:home')
+
+    def get_context_data(self, **kwargs):
+        context =super(AddMenuView, self).get_context_data(**kwargs)
+        context['display_type'] = "none"
+        return context
+
+    def get_success_url(self):
+        id = Menu.objects.last().id
+        return reverse('restaurant:edit', kwargs={'pk':id,})
+
 
 class EditMenuView(UpdateView):
+
     model = Menu
     form_class = MenuForm
     template_name = 'restaurant/add.html'
-    success_url = reverse_lazy('restaurant:home')
+    def get_context_data(self, **kwargs):
+        context =super(EditMenuView, self).get_context_data(**kwargs)
+        context['pk'] = self.kwargs['pk']
+        context['display_type'] = "block"
+        context['ingredients_id'] = list(chain.from_iterable(Menu.objects.filter(id=self.kwargs['pk']).values_list('ingredient')))
+        # print(list(chain.from_iterable(context['ingredients_id'])))
+        context['ingredient_list'] = Ingredient.objects.all()
+        context['ingredients_category'] = Ingredient.objects.values('category').distinct()
+        return context
+
+
+    def createIngredientsForm(request,  *args, **kwargs):
+        pk = kwargs['pk']
+
+        if request.method == "POST":
+            ingredient_form = IngredientsForm()
+            print("1")
+            # print(request.POST.getlist('ingredient_id'))
+            if 'ingredient_id' in request.POST:
+                ingredient_form = IngredientsForm(request.POST)
+                print("2")
+                # if ingredient_form.is_valid():
+                #     print("3")
+                    # form = MenuForm(request.POST)
+                    # form.save()
+                for p in request.POST["ingredient_id"]:
+                    print("4")
+                    menu = Menu.objects.get(id=pk)
+                    menu.ingredient.add(p)
+                    print("5")
+                    menu.save()
+                    print("save")
+                    # return reverse('restaurant:edit', kwargs={'pk':pk})
+
+
+
+        print("before context")
+        # context = {
+        #     # 'ingredient_form': ingredient_form,
+        #     'pk': int(pk),
+        # }
+        return redirect('restaurant:edit', pk=int(pk))
+
+    def deleteIngredient(request):
+        if request.method =="POST":
+            if 'delete_ingredient' in request.POST:
+                menu_id=request.GET.get('pk')
+                menu=Menu.objects.get(id=menu_id)
+                ingredient = request.POST['delete']
+                ingredient_id = Ingredient.objects.filter(Jp_name=ingredient).values('id')
+                menu.ingredient.remove(list(ingredient_id)[0]["id"])
+                menu.save()
+
+        return redirect('visitor:home')
+
+    def get_success_url(self):
+        # id = self.kwargs['pk']
+        print("here")
+        return reverse('restaurant:home')
 
 class DeleteMenuView(DeleteView):
     model = Menu
     template_name = 'restaurant/confirm_delete.html'
     success_url = reverse_lazy('restaurant:home')
 
-def ingredient(request,category):
-    ingredients = Ingredient.objects.filter(category=category)
-
-    context = {
-        'ingredients':ingredients,
-    }
-    return render(request, 'restaurant/ingredient.html', context)
 
 
 
-def category(request):
-    restaurant = request.user
-    menus = Menu.objects.filter(Restaurant_id=restaurant.id)
-    ingredients = Ingredient.objects.all()
-    ingredients_category = Ingredient.objects.values('category').distinct()
-    context = {
-        'restaurant': restaurant.first_name,
-        'menus': menus,
-        'ingredients':ingredients,
-        'ingredients_category':ingredients_category,
-    }
-    return render(request, 'restaurant/category.html', context)
+
+#
+# def category(request):
+#     restaurant = request.user
+#     menus = Menu.objects.filter(Restaurant_id=restaurant.id)
+#     ingredients = Ingredient.objects.all()
+#     ingredients_category = Ingredient.objects.values('preference').distinct()
+#     context = {
+#         'restaurant': restaurant.first_name,
+#         'menus': menus,
+#         'ingredients':ingredients,
+#         'ingredients_category':ingredients_category,
+#     }
+#     return render(request, 'restaurant/category.html', context)
+
+

@@ -2,15 +2,62 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    {% load static %}
+    {% load hebon %}
+    <link href="{% static 'css/restaurant_add.css' %}" rel="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Title</title>
 </head>
 <body>
-<form enctype="multipart/form-data" method="post">
-    {% csrf_token %}
-    {{ form.as_ul }}
+<div class="from">
+    <form enctype="multipart/form-data" method="post">
+        <div>
+            {% csrf_token %}
+            {{ form.as_ul }}
+            <label> 材料:</label>
 
-    <a href="{% url 'restaurant:category'%}">材料追加</a>
-    <button type="submit">投稿</button>
-</form>
+            {% for ingredient in menu.ingredient.all.values %}
+                <li><i class="fa-solid fa-xmark"></i>  {{ ingredient.Jp_name  }} </li>
+
+            {% endfor %}
+
+        </div>
+        <div>
+            <button type="submit" >投稿</button>
+        </div>
+
+    </form>
+</div>
+<div class="ingredients_form"  style="display: {{ display_type }}">
+    <details >
+        <summary>材料追加</summary>
+        <form  action='{% url 'restaurant:ingredient' pk  %}' method='post' class='form' id="add_ingredient" >
+            <!--材料登録フォームを表示 -->
+            {% csrf_token %}
+{#            <input type="hidden" name="user_id" value={{ user_id }}>#}
+            <ul>
+                {% for category in ingredients_category %}
+                <li>
+                <details>
+                <summary>{{ category.category }}</summary>
+                <ul class="ingredient_list" >
+                    {% for ingredient in ingredient_list %}
+                        {% if ingredient.category == category.category and ingredient.id not in ingredients_id %}
+                            <li class="ingredient_item"><input type="checkbox" name="ingredient_id"  value={{ ingredient.id }}><p>{{ ingredient.Jp_name }}</p></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                </details>
+                 </li>
+                {% endfor %}
+            </ul>
+            <div style="text-align: center">
+                <button type='submit' class='register_button'>材料登録</button>
+            </div>
+        </form>
+    </details>
+</div>
+
+
 </body>
 </html>

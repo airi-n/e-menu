@@ -1,18 +1,33 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link href="{% static 'css/visitor_home.css' %}" rel="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Title</title>
 </head>
 <body>
 
-{{ restaurant }}
-{% for menu in menus %}
-    {{ menu.photo }}
-    {{ menu.name }}
-    <a href="{% url 'restaurant:edit' menu.pk %}">メニュー編集</a>
-    <a href="{% url 'restaurant:delete' menu.pk %}">メニュー削除</a>
-{% endfor %}
-<a href="{% url 'restaurant:add' %}">メニュー追加</a>
+<h2>{{ restaurant }}</h2>
+
+    <div>
+        {% for menu in menus %}
+            <div>
+            {{ menu.name }}
+            </div>
+{#            # i have no ide a why path is like that...#}
+            <img src='../visitor/images/{{menu.photo}}'  width="250" height="150">
+
+
+            <a href="{% url 'restaurant:edit' menu.pk %}"><i class="fa-solid fa-pen-to-square"></i></a>
+            <a href="{% url 'restaurant:delete' menu.pk %}"><i class="fa-solid fa-trash"></i></a>
+        {% endfor %}
+
+    </div>
+<div>
+    <a href="{% url 'restaurant:add' %}"><i class="fa-solid fa-plus"></i></a>
+</div>
+
 </body>
 </html>

@@ -1,10 +1,22 @@
 from django import forms
-# from .models import
+from django.db import models
+from accounts.models import User
+from restaurant.models import Ingredient
 
 
-# class CheckForm(forms.Form):
-#     read_terms = forms.BooleanField(
-#         label='read terms',
-#         required=True,
-#         widget=forms.CheckboxInput(attrs={'class': 'check'}),
-#     )
+class PreferenceForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'from-control'
+    class Meta:
+        model = User
+        fields = ('id','preference',)
+
+        # widgets = {
+        #     'preference': forms.CheckboxSelectMultiple(),
+        # }
+TagInlineFormSet = forms.inlineformset_factory(
+    User, User.preference.through, fields='__all__', can_delete=False
+)
