@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     {% load static %}
+    {% load hebon %}
 
     <link href="{% static 'css/visitor_home.css' %}" rel="stylesheet" type="text/css" media="all">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -42,7 +43,7 @@
                 {% for category in ingredients_category %}
                 <li>
                 <details>
-                <summary>{{ category.category }}</summary>
+                <summary>{{ category.category | hebon }}</summary>
                 <ul class="ingredient_list" >
                     {% for ingredient in ingredient_list %}
                         {% if ingredient.category == category.category and ingredient.Jp_name not in preference_jp_list %}
@@ -108,8 +109,9 @@
             <li class="el_flexItem">
                 <div class="box">
                     <img src="https://www.japan-guide.com/g9/4811_hakataramen.jpg" width="250" height="150" >
-                    <h3>Ramen</h3>
-                    <p>Ramen is a Japanese noodle dish. Hakata Ramen is a local ramen dish that features thin noodles in a thick, creamy tonkotsu soup,
+                    <h3>Noodle</h3>
+                    <p>Noodles are a staple of Japanese cuisine. They are often served chilled with dipping sauces, or in soups or hot dishes.
+                        Ramen is a Japanese noodle dish. Hakata Ramen is a local ramen dish that features thin noodles in a thick, creamy tonkotsu soup,
                         topped with slices of chashu. Some of the best places to enjoy Hakata Ramen are the city's
                         emblematic yatai food stalls. Hakata Ramen can also be found at any of the numerous ramen-ya in Fukuoka,
                         especially around Hakata Station.

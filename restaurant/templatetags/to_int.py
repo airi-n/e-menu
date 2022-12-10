@@ -4,4 +4,4 @@ register = template.Library()
 
 @register.filter()
 def to_int(value):
-    return str(value)
+    return int(value)

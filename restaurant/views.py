@@ -48,7 +48,7 @@ class EditMenuView(UpdateView):
 
     model = Menu
     form_class = MenuForm
-    template_name = 'restaurant/add.html'
+    template_name = 'restaurant/edit.html'
     def get_context_data(self, **kwargs):
         context =super(EditMenuView, self).get_context_data(**kwargs)
         context['pk'] = self.kwargs['pk']
@@ -72,8 +72,7 @@ class EditMenuView(UpdateView):
                 #     print("3")
                     # form = MenuForm(request.POST)
                     # form.save()
-                for p in request.POST["ingredient_id"]:
-                    print(p)
+                for p in request.POST.getlist('ingredient_id'):
                     menu = Menu.objects.get(id=pk)
                     menu.ingredient.add(p)
 

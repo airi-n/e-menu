@@ -11,28 +11,16 @@
 </head>
 <body>
 <div class="from">
-    <div style="float:right">
-    <label> 材料:</label>
-    <br>
-        <ul class="list list--2" >
-        {% for ingredient in menu.ingredient.all.values %}
-            <form action="{% url 'restaurant:delete_ingredient' pk %}" method='post'>
-                {% csrf_token %}
-                <li>
-                    <input type="hidden" value={{ ingredient.id }} name="delete">
-                    <button name="delete_ingredient" class="delete-button"><i class="fa-solid fa-xmark"></i></button>
-                    <div class="tag">
-                         {{ ingredient.Jp_name  }}
-                    </div>
-                </li>
-            </form>
-        {% endfor %}
-        </ul>
-    </div>
     <form enctype="multipart/form-data" method="post" class="menu_form">
         <div>
             {% csrf_token %}
             {{ form.as_ul }}
+{#            <label>カテゴリ</label>#}
+{#            <select name="example" style="font-size: 30px">#}
+{#                <option>麺類</option>#}
+{#                <option>鍋</option>#}
+{#                <option>めんたい</option>#}
+{#            </select>#}
         </div>
         <div>
             <button type="submit" style="margin-top:5%; margin-left: 40%;" >投稿</button>
@@ -42,37 +30,6 @@
 
 </div>
 
-<div class="ingredients_form"  style="display: {{ display_type }}">
-
-    <details >
-        <summary>材料追加</summary>
-        <form  action='{% url 'restaurant:ingredient' pk  %}' method='post' class='form' id="add_ingredient" >
-            <!--材料登録フォームを表示 -->
-            {% csrf_token %}
-{#            <input type="hidden" name="user_id" value={{ user_id }}>#}
-            <ul>
-                {% for category in ingredients_category %}
-                <li>
-                <details>
-                <summary>{{ category.category }}</summary>
-                <ul class="ingredient_list" >
-                    {% for ingredient in ingredient_list %}
-                        {% if ingredient.category == category.category and ingredient.id not in ingredients_id %}
-
-                            <li class="ingredient_item"><input type="checkbox" name="ingredient_id"  value={{ ingredient.id | to_int }}><p>{{ ingredient.Jp_name }}</p></li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-                </details>
-                 </li>
-                {% endfor %}
-            </ul>
-            <div style="text-align: center">
-                <button type='submit' class='register_button'>材料登録</button>
-            </div>
-        </form>
-    </details>
-</div>
 
 
 </body>
